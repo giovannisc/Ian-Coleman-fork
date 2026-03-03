@@ -1,47 +1,48 @@
 # BIP39 Offline Wallet Tool (React + Vite + Tailwind)
 
-Aplicação frontend em TypeScript para derivação de carteira com processamento 100% client-side.
+TypeScript frontend application for wallet derivation with 100% client-side processing.
 
-## Segurança
-- Nenhuma mnemonic/seed/chave é enviada para servidor.
-- Não há persistência de dados sensíveis em localStorage/sessionStorage/cookies.
-- Deploy é estático (S3 + CloudFront via SST), sem backend para criptografia.
+## Security
+- No mnemonic/seed/private-key data is sent to a server.
+- Sensitive data is not persisted in `localStorage`/`sessionStorage`/cookies.
+- Deployment is static (S3 + CloudFront via SST), with no cryptographic backend.
 
-## Escopo atual
-- Geração de mnemonic BIP39 (wordlist inglês).
-- Validação de mnemonic BIP39.
-- Derivação de seed.
-- Derivação Bitcoin BIP84 (SegWit nativo) para mainnet/testnet.
-- Derivação Bitcoin BIP86 (Taproot/Bech32m) para mainnet/testnet.
-- Modo BIP39:
-- `Estrito` (padrão): 12/15/18/21/24 palavras e PBKDF2 2048.
-- `Avançado`: permite PBKDF2 custom (com alerta de compatibilidade).
-- Validação robusta de derivation path no core TypeScript.
+## Current Scope
+- BIP39 mnemonic generation (English wordlist).
+- BIP39 mnemonic validation.
+- Seed derivation.
+- Bitcoin BIP84 derivation (Native SegWit) for mainnet/testnet.
+- Bitcoin BIP86 derivation (Taproot/Bech32m) for mainnet/testnet.
+- BIP39 modes:
+- `Strict` (default): 12/15/18/21/24 words and PBKDF2=2048.
+- `Advanced`: allows custom PBKDF2 rounds with compatibility warning.
+- Robust derivation-path validation in TypeScript core.
+- UI language support for `English` and `Português (Brasil)`.
 
-## Comandos
+## Commands
 ```bash
-# instalar dependências
+# install dependencies (workspace root + web package)
 npm install
 
-# desenvolvimento
+# development
 npm run dev
 
-# build de produção
+# production build
 npm run build
 
-# preview local do build
+# local preview of built app
 npm run preview
 
 # lint
 npm run lint
 
-# testes unitários (vetores oficiais inclusos)
+# unit tests (official vectors included)
 npm run test
 ```
 
-## Uso local e offline
-1. Rode `npm run build`.
-2. Sirva a pasta `dist/` localmente (ex.: `npm run preview`).
-3. Após carregar uma vez, o service worker mantém os assets em cache para uso offline.
+## Local and Offline Usage
+1. Run `npm run build`.
+2. Serve `web/dist` locally with a static server (for example `npm run preview`).
+3. Open the local URL in the browser.
 
-Observação: para uso com valores reais, prefira ambiente isolado e valide checksum do artefato antes da execução.
+For real funds, prefer an isolated environment and verify artifact checksums before execution.

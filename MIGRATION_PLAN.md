@@ -1,81 +1,80 @@
-# Plano Técnico de Migração: React + Vite + Tailwind + SST
+# Technical Migration Plan: React + Vite + Tailwind + SST
 
-## Contexto
-Este repositório possui uma aplicação legada em JavaScript/jQuery com lógica sensível de geração de mnemonic/seed/chaves.
-O objetivo é migrar para uma stack moderna mantendo segurança, suporte offline e deploy em AWS.
+## Context
+This repository contains a legacy JavaScript/jQuery wallet tool with sensitive mnemonic/seed/key logic.
+The goal is to migrate to a modern stack while preserving security, offline usage, and AWS deployment.
 
-## Objetivos
-- Migrar frontend para **React + Vite + TypeScript + TailwindCSS**.
-- Manter processamento de dados sensíveis **100% client-side**.
-- Permitir execução **local e offline**.
-- Fazer deploy em AWS com **SST** usando site estático.
+## Goals
+- Migrate the frontend to **React + Vite + TypeScript + TailwindCSS**.
+- Keep sensitive processing **100% client-side**.
+- Support **local and offline** execution.
+- Deploy on AWS with **SST** as a static site.
 
-## Requisitos de Segurança (não negociáveis)
-- Nenhuma mnemonic/seed/chave deve sair do browser.
-- Não usar backend para derivação/criptografia de carteira.
-- Não persistir segredos em `localStorage`, `sessionStorage`, IndexedDB, cookies ou logs.
-- Não incluir trackers, analytics ou scripts de terceiros.
-- Garantir build reproduzível e publicar checksums dos artefatos offline.
-- Informar ao usuário quando estiver em modo não padrão (ex.: PBKDF2 custom).
+## Security Requirements (non-negotiable)
+- No mnemonic/seed/private key data may leave the browser.
+- Do not use backend services for wallet derivation or cryptographic operations.
+- Do not persist secrets in `localStorage`, `sessionStorage`, IndexedDB, cookies, or logs.
+- Do not include trackers, analytics, or third-party runtime scripts.
+- Keep reproducible builds and publish checksums for distributable artifacts.
+- Warn users clearly when using non-standard compatibility options (for example custom PBKDF2 rounds).
 
-## Arquitetura Alvo
+## Target Architecture
 
-## Frontend (web/)
+## Frontend (`web/`)
 - Vite + React + TypeScript (`strict: true`).
-- Tailwind para UI.
-- Core de carteira em módulos TS puros (`src/core/*`) sem dependência de DOM.
-- Camada de apresentação React (`src/components/*`).
+- TailwindCSS for UI styling.
+- Wallet core in pure TypeScript modules (`src/core/*`) without DOM dependency.
+- React presentation layer in `src/*`.
 
-## Offline
-- Service Worker para cache dos assets estáticos (PWA).
-- Build local (`dist/`) executável sem internet.
-- Política: sem dependências de runtime externas (fonts/scripts CDN).
+## Local and Offline Model
+- Static production build (`web/dist`) runs without internet after dependencies are installed and build is generated.
+- No required backend component for runtime.
+- No runtime CDN dependencies (fonts/scripts).
+- Optional packaging/distribution can provide checksum-verifiable offline artifacts.
 
-## Deploy AWS (SST)
-- Infra de site estático em S3 + CloudFront via `sst.aws.StaticSite`.
-- Deploy somente dos arquivos buildados do frontend.
-- Sem APIs, sem Lambda para lógica sensível.
+## AWS Deployment (SST)
+- Static hosting in S3 + CloudFront via `sst.aws.StaticSite`.
+- Deploy only built frontend files.
+- No API/Lambda for sensitive wallet logic.
 
-## Estratégia de Migração por Fases
-1. **Fundação (esta entrega)**
-- Scaffold React+TS+Tailwind.
-- Base de segurança em memória.
-- Primeiro fluxo funcional Bitcoin (BIP39 + BIP84 inicial).
-- PWA offline básico.
-- SST StaticSite configurado.
+## Migration Strategy by Phase
+1. Foundation
+- Scaffold React + TS + Tailwind.
+- Implement in-memory safety baseline.
+- Deliver initial Bitcoin flow (BIP39 + BIP84).
+- Configure SST static site deploy.
 
-2. **Paridade funcional com legado**
-- Migrar tabs/fluxos principais (BIP32/44/49/84/141).
-- Portar validações e mensagens.
-- Cobrir com testes de regressão.
+2. Functional parity with legacy
+- Migrate major flows and tabs.
+- Port validation behavior.
+- Add regression coverage.
 
-3. **Padrões modernos Bitcoin**
-- Adicionar BIP86/Taproot + Bech32m.
-- Atualizar dependências criptográficas.
-- Expandir vetores oficiais de teste.
+3. Modern Bitcoin standards
+- Add BIP86/Taproot + Bech32m.
+- Update cryptographic dependencies.
+- Expand official vector tests.
 
-4. **Hardening final**
-- Revisão de segurança (CSP, headers, supply chain).
-- Pacote offline assinável/checksum.
-- Documentação de operação segura.
+4. Final hardening
+- Security review (CSP, headers, supply-chain posture).
+- Checksum-verified distributable package.
+- Operational security documentation.
 
-## Critérios de Aceite da Fase 1
-- App React funcionando com TypeScript estrito e Tailwind.
-- Geração/validação de mnemonic e derivação BIP84 executadas apenas no browser.
-- Sem persistência de segredos em storage.
-- Build estático funcionando offline.
-- Deploy AWS por SST configurado e documentado.
+## Phase 1 Acceptance Criteria
+- React app running with strict TypeScript and Tailwind.
+- BIP39 generation/validation and BIP84 derivation done in-browser only.
+- No secret persistence in browser storage.
+- Static build works in local/offline operation mode.
+- AWS deploy with SST is configured and documented.
 
-## Riscos e Mitigações
-- **Risco:** divergência de resultados com legado.
-  - **Mitigação:** vetores de teste oficiais e comparação progressiva.
-- **Risco:** regressão de segurança por bibliotecas/frontend.
-  - **Mitigação:** dependências mínimas, auditoria periódica e travamento de versão.
-- **Risco:** offline quebrar por dependência externa.
-  - **Mitigação:** remover CDNs e cachear assets locais.
+## Risks and Mitigations
+- **Risk:** behavior divergence from legacy implementation.
+  - **Mitigation:** official vector tests and progressive comparison.
+- **Risk:** frontend/library security regressions.
+  - **Mitigation:** minimal dependencies, periodic audits, and version control.
+- **Risk:** offline mode breaks because of external runtime dependencies.
+  - **Mitigation:** remove CDN/runtime fetch requirements and keep assets local.
 
-## Próximos Passos Imediatos
-- Criar app `web/` com React+TS+Tailwind.
-- Implementar módulo inicial de derivação BTC em TS.
-- Configurar PWA offline.
-- Configurar `sst.config.ts` para deploy estático.
+## Immediate Next Steps
+- Continue evolving the `web/` app with production-safe defaults.
+- Keep Bitcoin core modules test-driven.
+- Maintain deployment docs and security guardrails as features evolve.

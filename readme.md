@@ -18,6 +18,17 @@ See:
 * `web/README.md` for local/offline usage
 * `DEPLOY_AWS_SST.md` for deploy steps
 
+### Local dev (new app)
+
+From the repository root:
+
+```
+npm install
+npm run dev
+```
+
+This uses npm workspaces and runs the app in `web/` without `--prefix`.
+
 ## Online Version
 
 https://iancoleman.io/bip39/

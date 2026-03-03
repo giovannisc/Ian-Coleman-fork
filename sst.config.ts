@@ -1,8 +1,9 @@
+/// <reference path=".sst/platform/config.d.ts" />
 export default $config({
   app(input) {
     return {
       name: "bip39-offline-wallet",
-      removal: input?.stage === "production" ? "retain" : "remove",
+      removal: input?.stage === "prod" ? "retain" : "remove",
       home: "aws",
     };
   },
@@ -12,6 +13,9 @@ export default $config({
       build: {
         command: "npm run build",
         output: "dist",
+      },
+      domain: {
+        name: `${$app.stage}.${process.env.HOSTED_ZONE}`,
       },
     });
 

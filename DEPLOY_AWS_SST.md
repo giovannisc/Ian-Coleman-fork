@@ -1,29 +1,31 @@
-# Deploy AWS com SST
+# AWS Deploy with SST
 
-## Pré-requisitos
-- Conta AWS configurada localmente (`aws configure` ou SSO).
+## Prerequisites
+- AWS account configured locally (`aws configure` or AWS SSO).
 - Node.js 20+.
-- Dependências instaladas na raiz e em `web/`.
+- Repository dependencies installed from the project root (`npm install`).
 
-## Configuração atual
-- Arquivo de infraestrutura: `sst.config.ts`
-- Recurso: `sst.aws.StaticSite`
-- Origem do build: `web/dist`
+## Current Configuration
+- Infrastructure file: `sst.config.ts`
+- Main resource: `sst.aws.StaticSite`
+- Build output source: `web/dist`
 
-## Fluxo de deploy
+## Deployment Flow
 ```bash
-# instalar dependências
+# install workspace dependencies (root + web)
 npm install
-npm run web:install
 
-# validar frontend
-npm run web:build
+# validate and build frontend
+npm run build
 
-# deploy
+# deploy static site with SST (via npx in script)
 npm run deploy
 ```
 
-## Observações
-- O deploy publica apenas assets estáticos.
-- Não há API/lambda para processamento de mnemonic/seed/chaves.
-- Para remover recursos de estágios não produtivos, use `sst remove --stage <stage>`.
+## Notes
+- Deployment publishes static assets only.
+- No API/Lambda is used for mnemonic/seed/private-key processing.
+- To remove non-production stage resources:
+```bash
+npx sst remove --stage <stage>
+```

@@ -1,124 +1,97 @@
-# Roadmap de Melhorias (Foco em TypeScript e Padrões Bitcoin)
+# Improvement Roadmap (TypeScript + Bitcoin Standards)
 
-## Objetivo
-Evoluir a base do projeto para suportar padrões modernos do ecossistema Bitcoin com maior segurança, manutenibilidade e testabilidade, adotando TypeScript como base da implementação futura.
+## Objective
+Keep evolving the project with modern Bitcoin standards, strict security defaults, and a maintainable TypeScript-first architecture.
 
-## Resumo das Lacunas Atuais
-- Ausência de suporte a Taproot (BIP86), endereços `bc1p` e Bech32m.
-- Dependências de criptografia Bitcoin em versões antigas.
-- Validação de derivation path com comportamento inconsistente em limites e checagens.
-- Recursos fora do padrão BIP39 estrito (ex.: número de palavras muito baixo e PBKDF2 custom) sem separação clara de modo avançado.
-- Trechos de documentação e UX legados para ecossistema atual.
+## Implementation Status (Updated: March 3, 2026)
 
-## Prioridades
+### Completed
+- React + Vite + TypeScript (`strict`) + TailwindCSS v4 web application is in place.
+- BIP39 flow implemented with strict default mode (12/15/18/21/24 words, PBKDF2=2048) and advanced compatibility mode.
+- Bitcoin derivation implemented for BIP84 (Native SegWit, Bech32 `bc1q...` / `tb1q...`) and BIP86 (Taproot, Bech32m `bc1p...` / `tb1p...`).
+- Taproot x-only handling and P2TR derivation integrated in TypeScript core.
+- Derivation path validation hardened with edge-case unit tests.
+- Official vectors (including BIP86) integrated in test suite.
+- Sensitive data baseline implemented: client-side only processing, no secret persistence, masked secrets by default, and one-click sensitive cleanup.
+- CSP hardening implemented with dynamic environment policy and production CSP without `style-src 'unsafe-inline'`.
+- UI supports `English` and `Português (Brasil)`.
+- UI supports `dark` and `light` themes.
+- Workspace setup simplified: single root `npm install`, root `npm run dev`, and SST execution via `npx` (no internal SST package dependency).
+- `vite-plugin-pwa` and service worker integration removed from web app.
+- Project documentation updated to English.
 
-## P0. Alinhamento com padrões Bitcoin atuais
-- Implementar BIP86 (`m/86'/coin_type'/account'/change/index`) para contas e derivação de endereços Taproot.
-- Implementar geração de endereço P2TR (`bc1p...`) usando Bech32m.
-- Adicionar suporte a chaves x-only quando aplicável no fluxo de Taproot.
-- Incluir vetores oficiais de teste para BIP86/Taproot.
+## Remaining Gaps
+- Broader Bitcoin standard coverage in UI/core (BIP44/BIP49/BIP141 and legacy compatibility flows).
+- Extended key format interoperability improvements (where applicable for migration parity goals).
+- Formal offline distribution flow with checksum/signature automation.
+- End-to-end browser test coverage for critical user paths.
+- CI enforcement for reproducible quality gates (lint/test/build/dependency checks).
+- Progressive tutorial mode (step-by-step teaching flow) beyond current single-screen tool UX.
 
-Critérios de aceite:
-- Para mnemonics conhecidas, resultados batem com vetores de referência de BIP86.
-- Endereços Taproot gerados em mainnet/testnet passam nos validadores de formato e checksums esperados.
+## Updated Priorities
 
-## P0. Atualização de dependências críticas
-- Atualizar stack de bibliotecas Bitcoin para versões modernas com suporte a Taproot/Bech32m.
-- Revisar bibliotecas auxiliares com impacto criptográfico direto.
-- Remover dependências obsoletas sem uso.
+## P0. Release Hardening and Operational Safety
+- Add automated artifact checksum generation and verification docs/scripts.
+- Add dependency security scanning in CI (`npm audit` policy + pinned lockfile workflow).
+- Add optional build-size optimization (code-splitting) to reduce large bundle warnings.
+- Keep CSP policy strict in production and validate headers in deploy pipeline.
 
-Critérios de aceite:
-- Build reproduzível sem warnings críticos de dependências.
-- Testes de regressão (BIP39/BIP32/BIP44/BIP49/BIP84) continuam passando.
+Acceptance criteria:
+- Every release includes checksum artifacts and verification instructions.
+- CI blocks merges on failing lint/test/build/security checks.
+- Production deploys pass CSP/header validation checks.
 
-## P1. Correções funcionais e robustez
-- Corrigir validação de derivation path:
-- checagem de índice inválido;
-- limites de índice (`0` a `2^31 - 1` por componente antes do hardened bit);
-- mensagens de erro mais precisas por profundidade.
-- Revisar validação de entrada para reduzir falsos positivos/negativos.
+## P1. Bitcoin Standard Coverage Expansion
+- Add additional derivation standards to UI/core (starting with BIP44 and BIP49).
+- Expand vector tests for each new supported standard.
+- Preserve strict separation between standard-safe defaults and advanced options.
 
-Critérios de aceite:
-- Casos de borda (índice máximo, índice inválido, hardened com xpub, profundidade) cobertos por teste unitário.
+Acceptance criteria:
+- New standards produce deterministic outputs validated by trusted vectors.
+- No regressions for BIP39/BIP84/BIP86 existing flows.
 
-## P1. Interoperabilidade BIP39
-- Introduzir `Modo Estrito BIP39` (padrão):
-- apenas 12/15/18/21/24 palavras;
-- PBKDF2 fixo em 2048.
-- Manter recursos não padrão em `Modo Avançado`, com alertas explícitos sobre compatibilidade.
+## P1. Test and CI Maturity
+- Add E2E tests for mnemonic generation, derivation, masking/reveal controls, and mode switching.
+- Add CI workflow with required status checks for lint, unit tests, typecheck, and build.
+- Add smoke test for locale/theme switching.
 
-Critérios de aceite:
-- Usuário entende claramente quando está fora do padrão.
-- Resultados em modo estrito compatíveis com carteiras BIP39 amplamente usadas.
+Acceptance criteria:
+- Pull requests require passing CI gates.
+- Critical wallet workflows are covered by automated browser tests.
 
-## P2. Atualização de UX e documentação
-- Revisar textos e sugestões de derivação legadas.
-- Atualizar referências externas e guias de uso.
-- Incluir seção “Compatibilidade por padrão” e “Modo Avançado”.
+## P2. Guided Tutorial Evolution
+- Introduce structured tutorial modules (concept -> guided action -> validation).
+- Add checkpoints/quizzes and “safe operation” guidance in flow.
+- Add optional non-sensitive derivation report export for learning/auditing.
 
-Critérios de aceite:
-- Documentação técnica e de uso refletem a implementação real.
+Acceptance criteria:
+- Users can complete an end-to-end guided tutorial path.
+- Tutorial content remains aligned with implemented derivation behavior.
 
-## Estratégia de Migração para TypeScript
+## Backlog Snapshot
 
-## Diretrizes
-- Migrar de forma incremental, sem “big bang”.
-- Começar por módulos de domínio (sem UI) para estabilizar lógica crítica.
-- Ativar `strict` no `tsconfig` e tratar erros de tipos como bloqueantes.
+### Done
+- [x] Define TypeScript stack and strict configuration.
+- [x] Migrate derivation path validation to TypeScript + tests.
+- [x] Update Bitcoin libraries for Taproot-capable stack.
+- [x] Implement Bech32m and BIP86/P2TR derivation.
+- [x] Add BIP86 vectors to tests.
+- [x] Keep BIP39 strict mode as default.
+- [x] Isolate advanced compatibility-breaking options.
+- [x] Remove `vite-plugin-pwa` usage.
+- [x] Add EN + PT-BR UI localization.
+- [x] Add dark/light theme switching.
+- [x] Harden CSP for production build.
+- [x] Standardize project docs in English.
+- [x] Simplify workspace install/run flow (`npm install` + root scripts).
 
-## Estrutura sugerida
-- `src/ts/core/bip39.ts`
-- `src/ts/core/bip32.ts`
-- `src/ts/core/derivation.ts`
-- `src/ts/core/address.ts`
-- `src/ts/core/networks.ts`
-- `src/ts/ui/` para integração com DOM
-- `src/ts/types/` para tipos compartilhados
+### Next
+- [ ] Add BIP44/BIP49 flows.
+- [ ] Add E2E tests and CI required checks.
+- [ ] Add release checksum/signature automation.
+- [ ] Add guided tutorial module system in-app.
 
-## Fases
-1. Preparação
-- Adicionar TypeScript, configuração de build e lint.
-- Definir convenções de tipos e limites de módulos.
-
-2. Núcleo criptográfico
-- Migrar derivação e validações (`bip39`, `bip32`, paths, scripts).
-- Cobrir com testes de vetor.
-
-3. Endereçamento moderno
-- Implementar Taproot/BIP86 e Bech32m.
-- Garantir retrocompatibilidade de BIP49/BIP84.
-
-4. Integração com UI
-- Encapsular DOM em camada de adapter.
-- Substituir lógica JS legada módulo a módulo.
-
-5. Endurecimento final
-- Remover código JS duplicado.
-- Ativar gates de CI (testes + lint + typecheck).
-
-## Testes recomendados
-- Unitários:
-- vetores oficiais para BIP39, BIP32, BIP49, BIP84, BIP86;
-- validação de derivation path.
-- Integração:
-- geração de xpub/xprv/ypub/zpub e equivalentes suportados;
-- geração de endereços por rede.
-- E2E:
-- fluxo completo de frase -> seed -> root key -> contas -> endereços.
-
-## Backlog inicial (execução)
-- [x] Definir stack TypeScript (compilador, bundler e runner de testes).
-- [x] Criar `tsconfig` com `strict: true`.
-- [x] Migrar validação de derivation path para TS + testes.
-- [x] Atualizar bibliotecas Bitcoin para versões com Taproot.
-- [x] Implementar Bech32m.
-- [x] Implementar BIP86 e geração P2TR.
-- [x] Adicionar vetores BIP86 no pipeline de testes.
-- [x] Implementar Modo Estrito BIP39 como padrão.
-- [x] Isolar Modo Avançado (opções não padrão) com avisos.
-- [x] Revisar documentação e mensagens de UI.
-
-## Observações de rollout
-- Fazer releases menores e frequentes por fase.
-- Manter compatibilidade para usuários existentes durante a transição.
-- Em cada fase, validar regressão dos fluxos já suportados antes de avançar.
+## Rollout Notes
+- Continue shipping in small, frequent increments.
+- Keep backward compatibility for currently supported standards.
+- Require regression checks before enabling each new standard in the UI.

@@ -1,96 +1,95 @@
-# Tutorial Guiado + Ferramenta Prática de Bitcoin
+# Guided Tutorial + Practical Bitcoin Tool
 
-## Objetivo
-Transformar a solução em uma experiência híbrida:
-1. Tutorial passo a passo para ensinar fundamentos de carteira Bitcoin.
-2. Ferramenta operacional para executar tarefas reais de derivação com segurança.
+## Goal
+Evolve the solution into a hybrid experience:
+1. Step-by-step tutorial to teach Bitcoin wallet fundamentals.
+2. Operational tool to execute real derivation tasks safely.
 
-## Escopo Atual Implementado
-- Geração de mnemonic BIP39 (wordlist inglês).
-- Validação de mnemonic BIP39.
-- Derivação de seed local (client-side).
-- Modo BIP39 `Estrito` (padrão): 12/15/18/21/24 palavras e PBKDF2 em 2048.
-- Modo BIP39 `Avançado`: PBKDF2 custom com alerta de compatibilidade.
-- Derivação BIP84 (Native SegWit, `bc1q...` / `tb1q...`).
-- Derivação BIP86 (Taproot, `bc1p...` / `tb1p...`) com Bech32m.
-- Validação robusta de derivation path no core TypeScript.
-- Exibição protegida de segredos (mascarada por padrão) e limpeza rápida da sessão.
+## Current Implemented Scope
+- BIP39 mnemonic generation (English wordlist).
+- BIP39 mnemonic validation.
+- Local seed derivation (client-side only).
+- BIP39 `Strict` mode (default): 12/15/18/21/24 words and PBKDF2 set to 2048.
+- BIP39 `Advanced` mode: custom PBKDF2 rounds with compatibility warning.
+- BIP84 derivation (Native SegWit, `bc1q...` / `tb1q...`).
+- BIP86 derivation (Taproot, `bc1p...` / `tb1p...`) with Bech32m.
+- Robust derivation-path validation in TypeScript core.
+- Protected secret visibility (masked by default) and quick sensitive-session cleanup.
 
-## Conceitos que podem ser ensinados com a solução atual
+## Concepts That Can Be Taught with the Current Solution
 
-## 1. Entropia e geração de mnemonic
-- Conceito: por que aleatoriedade forte define a segurança inicial da carteira.
-- Na prática: geração de mnemonic com tamanhos válidos do padrão BIP39.
+## 1. Entropy and Mnemonic Generation
+- Concept: strong randomness defines initial wallet security.
+- In practice: generate mnemonic phrases with valid BIP39 sizes.
 
-## 2. Mnemonic, checksum e validação BIP39
-- Conceito: frase de recuperação não é “senha comum”; ela segue estrutura e checksum.
-- Na prática: validação com feedback de frase inválida.
+## 2. Mnemonic, Checksum, and BIP39 Validation
+- Concept: a recovery phrase is not a generic password; it has structure and checksum rules.
+- In practice: validate phrase input and display clear invalid feedback.
 
-## 3. Passphrase BIP39
-- Conceito: mesma mnemonic com passphrase diferente gera seed e carteira diferentes.
-- Na prática: comparar saídas mudando apenas a passphrase.
+## 3. BIP39 Passphrase
+- Concept: same mnemonic + different passphrase => different seed and wallet.
+- In practice: compare outputs by changing only the passphrase.
 
-## 4. Seed e PBKDF2
-- Conceito: seed é material criptográfico derivado da mnemonic.
-- Na prática:
-- modo estrito garante interoperabilidade (PBKDF2 2048);
-- modo avançado mostra impacto de rounds custom.
+## 4. Seed and PBKDF2
+- Concept: the seed is cryptographic material derived from mnemonic + passphrase.
+- In practice:
+- strict mode preserves interoperability (PBKDF2 2048);
+- advanced mode demonstrates custom-round impact.
 
-## 5. HD Wallet e derivação por caminho
-- Conceito: estrutura hierárquica de carteira (account/change/index).
-- Na prática: alterar `account`, `change` e quantidade de endereços derivados.
+## 5. HD Wallet and Path-Based Derivation
+- Concept: hierarchical wallet structure (account/change/index).
+- In practice: change `account`, `change`, and derived address count.
 
-## 6. Padrões modernos de endereçamento
-- Conceito: diferença entre BIP84 (SegWit v0) e BIP86 (Taproot).
-- Na prática: selecionar padrão e observar mudança de tipo de endereço (`bc1q` vs `bc1p`).
+## 6. Modern Addressing Standards
+- Concept: differences between BIP84 (SegWit v0) and BIP86 (Taproot).
+- In practice: switch standards and observe address type changes (`bc1q` vs `bc1p`).
 
 ## 7. Bech32 vs Bech32m
-- Conceito: formatos de codificação para witness versions diferentes.
-- Na prática: BIP84 usa Bech32; BIP86 usa Bech32m.
+- Concept: witness-version-dependent encoding formats.
+- In practice: BIP84 uses Bech32; BIP86 uses Bech32m.
 
-## 8. Segurança operacional
-- Conceito: uso local/offline reduz superfície de ataque.
-- Na prática: ferramenta funciona localmente, sem backend para seed/chaves.
+## 8. Operational Security
+- Concept: local/offline usage reduces attack surface.
+- In practice: no backend is involved in mnemonic/seed/key processing.
 
-## Funcionalidades úteis para uso de Bitcoin
+## Useful Features for Real Bitcoin Usage
 
-## A. Criação e recuperação de carteira
-- Gerar mnemonic BIP39.
-- Validar mnemonic existente.
-- Derivar seed localmente para conferência e interoperabilidade.
+## A. Wallet Creation and Recovery
+- Generate a BIP39 mnemonic.
+- Validate an existing mnemonic.
+- Derive seed locally for verification and interoperability.
 
-## B. Derivação para recebimento e organização
-- Selecionar rede (mainnet/testnet).
-- Selecionar padrão (BIP84/BIP86).
-- Derivar endereços por conta e trilha (`change/index`).
+## B. Receiving/Organization Derivation
+- Select network (mainnet/testnet).
+- Select standard (BIP84/BIP86).
+- Derive addresses by account and branch (`change/index`).
 
-## C. Compatibilidade entre ferramentas
-- Exibir `account xpub` para cenários watch-only.
-- Exibir `account path` completo para auditoria e integração.
+## C. Cross-Tool Compatibility
+- Show `account xpub` for watch-only scenarios.
+- Show full `account path` for auditing/integration.
 
-## D. Controles de segurança de uso diário
-- Seed/chaves privadas mascaradas por padrão.
-- Toggle explícito para exibição de segredos.
-- Botão para limpar dados sensíveis da sessão.
+## D. Daily Security Controls
+- Seed/private keys masked by default.
+- Explicit toggle to reveal secrets.
+- Dedicated action to clear sensitive session data.
 
-## Estrutura recomendada de tutorial (passo a passo)
+## Recommended Tutorial Structure (Step-by-Step)
+1. Module 1: Basic safety (entropy, mnemonic, backup discipline).
+2. Module 2: Mnemonic to seed (passphrase and PBKDF2).
+3. Module 3: Practical HD derivation (account/change/index).
+4. Module 4: Modern addresses (BIP84 vs BIP86, Bech32 vs Bech32m).
+5. Module 5: Secure operation (offline-first, operational hygiene, watch-only).
 
-1. Módulo 1: Segurança básica (entropia, mnemonic, backup).
-2. Módulo 2: Da mnemonic ao seed (passphrase e PBKDF2).
-3. Módulo 3: Derivação HD prática (account/change/index).
-4. Módulo 4: Endereços modernos (BIP84 vs BIP86, Bech32 vs Bech32m).
-5. Módulo 5: Operação segura (offline-first, higiene operacional, watch-only).
+## Suggested Future Evolution (Not Implemented Yet)
+- Expand UI coverage for additional standards (BIP32/BIP44/BIP49/BIP141) with guided explanations.
+- Add quiz/checkpoint modules for each tutorial step.
+- Add didactic export for a derivation report without sensitive data.
 
-## Evolução futura sugerida (não implementada nesta etapa)
-- Expandir para outros padrões na UI (BIP32/BIP44/BIP49/BIP141) com guias didáticos.
-- Módulo de quizzes/checkpoints por etapa do tutorial.
-- Exportação didática de “relatório de derivação” sem dados sensíveis.
+## Security Rules That Must Remain
+- Never send mnemonic/seed/private key data to backend services.
+- Never persist secrets in `localStorage`, `sessionStorage`, or cookies.
+- Avoid third-party runtime scripts.
+- Keep explicit offline-operation guidance for trusted environments.
 
-## Regras de segurança que devem permanecer
-- Nunca enviar mnemonic/seed/chave para backend.
-- Não persistir segredos em localStorage/sessionStorage/cookies.
-- Evitar scripts de terceiros no runtime.
-- Manter orientação explícita para uso offline em ambiente confiável.
-
-## Resultado esperado
-A solução ensina conceitos fundamentais de carteiras Bitcoin enquanto permite execução prática e auditável das tarefas mais relevantes para uso real, com foco em interoperabilidade e segurança operacional.
+## Expected Outcome
+The solution teaches essential Bitcoin wallet concepts while enabling practical, auditable execution of high-value wallet tasks, with focus on interoperability and operational security.
