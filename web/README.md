@@ -1,27 +1,28 @@
 # BIP39 Offline Wallet Tool (React + Vite + Tailwind)
 
-TypeScript frontend application for wallet derivation with 100% client-side processing.
+TypeScript frontend focused on Bitcoin wallet derivation with client-side-only sensitive processing.
 
 ## Security
-- No mnemonic/seed/private-key data is sent to a server.
+- No mnemonic/seed/private-key data is sent to backend services.
 - Sensitive data is not persisted in `localStorage`/`sessionStorage`/cookies.
+- Production build uses strict CSP (no `style-src 'unsafe-inline'`).
 - Deployment is static (S3 + CloudFront via SST), with no cryptographic backend.
 
 ## Current Scope
-- BIP39 mnemonic generation (English wordlist).
-- BIP39 mnemonic validation.
-- Seed derivation.
-- Bitcoin BIP84 derivation (Native SegWit) for mainnet/testnet.
-- Bitcoin BIP86 derivation (Taproot/Bech32m) for mainnet/testnet.
+- BIP39 mnemonic generation and validation (English wordlist).
 - BIP39 modes:
 - `Strict` (default): 12/15/18/21/24 words and PBKDF2=2048.
-- `Advanced`: allows custom PBKDF2 rounds with compatibility warning.
+- `Advanced`: custom PBKDF2 rounds with compatibility warning.
+- Bitcoin derivation:
+- BIP84 (Native SegWit) for mainnet/testnet.
+- BIP86 (Taproot/Bech32m) for mainnet/testnet.
 - Robust derivation-path validation in TypeScript core.
 - UI language support for `English` and `Português (Brasil)`.
+- UI theme support for `dark` and `light`.
 
 ## Commands
 ```bash
-# install dependencies (workspace root + web package)
+# install workspace dependencies (run at repo root)
 npm install
 
 # development
@@ -36,13 +37,13 @@ npm run preview
 # lint
 npm run lint
 
-# unit tests (official vectors included)
+# unit tests
 npm run test
 ```
 
 ## Local and Offline Usage
 1. Run `npm run build`.
-2. Serve `web/dist` locally with a static server (for example `npm run preview`).
-3. Open the local URL in the browser.
+2. Serve `web/dist` locally (for example `npm run preview`).
+3. Open the local URL in a trusted environment.
 
-For real funds, prefer an isolated environment and verify artifact checksums before execution.
+For real funds, prefer isolated execution and verify artifact checksums before use.

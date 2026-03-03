@@ -15,6 +15,8 @@ Evolve the solution into a hybrid experience:
 - BIP86 derivation (Taproot, `bc1p...` / `tb1p...`) with Bech32m.
 - Robust derivation-path validation in TypeScript core.
 - Protected secret visibility (masked by default) and quick sensitive-session cleanup.
+- UI language support (`English`, `Português (Brasil)`).
+- UI theme support (`dark`, `light`).
 
 ## Concepts That Can Be Taught with the Current Solution
 

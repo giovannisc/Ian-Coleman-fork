@@ -47,6 +47,56 @@ describe("validateDerivationPath", () => {
       expect(result.error).toContain("Profundidade");
     }
   });
+
+  it("rejeita caminho vazio", () => {
+    const result = validateDerivationPath("   ");
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error).toContain("vazio");
+    }
+  });
+
+  it("rejeita separador inválido após m", () => {
+    const result = validateDerivationPath("m84'/0'/0'");
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error).toContain("Separador inválido");
+    }
+  });
+
+  it("normaliza espaços externos e preserva caminho normalizado", () => {
+    const result = validateDerivationPath("   m/84'/0'/0'/0/1   ");
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.normalizedPath).toBe("m/84'/0'/0'/0/1");
+    }
+  });
+
+  it("aceita notação hardened com h e H", () => {
+    const result = validateDerivationPath("m/84h/0H/0'");
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.segments[0]?.hardened).toBe(true);
+      expect(result.segments[1]?.hardened).toBe(true);
+      expect(result.segments[2]?.hardened).toBe(true);
+    }
+  });
+
+  it("respeita maxDepth customizado", () => {
+    const result = validateDerivationPath("m/0/1", { maxDepth: 1 });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error).toContain("excede o máximo");
+    }
+  });
+
+  it("respeita maxIndex customizado", () => {
+    const result = validateDerivationPath("m/2", { maxIndex: 1 });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error).toContain("Use 0..1");
+    }
+  });
 });
 
 describe("validateXpubDerivationPath", () => {
@@ -69,5 +119,10 @@ describe("validateXpubDerivationPath", () => {
     if (!result.ok) {
       expect(result.error).toContain("hardened");
     }
+  });
+
+  it("permite hardened quando não é xpub", () => {
+    const result = validateXpubDerivationPath("m/84'/0'/0'", false, true);
+    expect(result.ok).toBe(true);
   });
 });

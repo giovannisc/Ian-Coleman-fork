@@ -9,6 +9,7 @@
 - Infrastructure file: `sst.config.ts`
 - Main resource: `sst.aws.StaticSite`
 - Build output source: `web/dist`
+- Repository model: single active app in `web/` (legacy stacks removed)
 
 ## Deployment Flow
 ```bash

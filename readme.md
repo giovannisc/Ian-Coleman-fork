@@ -20,9 +20,10 @@ This repository has been cleaned to keep only the current Bitcoin-focused applic
 ## Project Structure
 - `web/`: main application.
 - `sst.config.ts`: AWS static site deploy configuration.
-- `MIGRATION_PLAN.md`: technical migration notes.
+- `MIGRATION_PLAN.md`: technical baseline and evolution plan.
 - `roadmap-typescript-bitcoin-standards.md`: implementation roadmap and status.
 - `DEPLOY_AWS_SST.md`: deploy instructions.
+- `release_process.md`: release workflow.
 
 ## Development
 From repository root:
