@@ -1,8 +1,8 @@
 # Technical Migration Plan: React + Vite + Tailwind + SST
 
 ## Context
-This repository contains a legacy JavaScript/jQuery wallet tool with sensitive mnemonic/seed/key logic.
-The goal is to migrate to a modern stack while preserving security, offline usage, and AWS deployment.
+This repository previously contained a legacy JavaScript/jQuery wallet tool and is now consolidated into the modern TypeScript application under `web/`.
+The goal remains preserving security, offline usage, and AWS deployment readiness.
 
 ## Goals
 - Migrate the frontend to **React + Vite + TypeScript + TailwindCSS**.
@@ -23,8 +23,8 @@ The goal is to migrate to a modern stack while preserving security, offline usag
 ## Frontend (`web/`)
 - Vite + React + TypeScript (`strict: true`).
 - TailwindCSS for UI styling.
-- Wallet core in pure TypeScript modules (`src/core/*`) without DOM dependency.
-- React presentation layer in `src/*`.
+- Wallet core in pure TypeScript modules (`web/src/core/*`) without DOM dependency.
+- React presentation layer in `web/src/*`.
 
 ## Local and Offline Model
 - Static production build (`web/dist`) runs without internet after dependencies are installed and build is generated.

@@ -3,3 +3,4 @@ bip39-standalone.html
 web/dist
 .sst
 .env
+**/sst-env.d.ts
