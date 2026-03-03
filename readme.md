@@ -2,6 +2,22 @@
 
 A tool for converting BIP39 mnemonic phrases to addresses and private keys.
 
+## New React App (Migration Track)
+
+There is now a new frontend implementation under `web/` using:
+
+* React
+* Vite
+* TypeScript
+* TailwindCSS
+* SST for AWS static deploy
+
+See:
+
+* `MIGRATION_PLAN.md` for the migration roadmap
+* `web/README.md` for local/offline usage
+* `DEPLOY_AWS_SST.md` for deploy steps
+
 ## Online Version
 
 https://iancoleman.io/bip39/

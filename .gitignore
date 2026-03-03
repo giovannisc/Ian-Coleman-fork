@@ -1,2 +1,4 @@
 node_modules
 bip39-standalone.html
+web/dist
+.sst
