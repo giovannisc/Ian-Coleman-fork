@@ -1,0 +1,3 @@
+[submodule "submodules/bip39"]
+	path = submodules/bip39
+	url = https://github.com/bitcoinjs/bip39.git

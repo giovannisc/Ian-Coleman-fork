@@ -91,8 +91,10 @@ describe("getUiText", () => {
     const ptBr = getUiText("pt-BR");
 
     expect(en.generateButton).toBe("Generate mnemonic");
-    expect(ptBr.generateButton).toBe("Gerar mnemonic");
+    expect(ptBr.generateButton).toBe("Gerar mnemônico");
     expect(en.themeLight).toBe("Light");
     expect(ptBr.themeLight).toBe("Claro");
+    expect(en.sourceMnemonic).toBe("Mnemonic + passphrase");
+    expect(ptBr.sourceMnemonic).toBe("Mnemônico + frase-senha");
   });
 });
